@@ -1,3 +1,6 @@
+:root{font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;}
 .face-verification-container {
   min-height: 100vh;
   background-color: hsl(220, 13%, 18%);

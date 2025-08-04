@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Camera, CameraOff } from 'lucide-react';
-import './FaceVerification.css';
+import '/src/assets/FaceVerification.css';
 
 const FaceVerification = ({ onSubmit, onRetake }) => {
   const videoRef = useRef(null);
