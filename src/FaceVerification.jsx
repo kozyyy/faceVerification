@@ -11,6 +11,7 @@ const FaceVerification = ({ onSubmit, onRetake }) => {
   const [countdown, setCountdown] = useState(5);
   const [phase, setPhase] = useState('timer');
   const [capturedImage, setCapturedImage] = useState(null);
+  const [captureTimestamp, setCaptureTimestamp] = useState(null);
 
   const startCamera = async () => {
     try {
@@ -55,18 +56,58 @@ const FaceVerification = ({ onSubmit, onRetake }) => {
         ctx.drawImage(video, 0, 0);
         
         const imageData = canvas.toDataURL('image/jpeg', 0.8);
-        setCapturedImage(imageData);
-        setPhase('preview');
-        stopCamera();
+        
+      const timestamp = new Date().toISOString();
+      setCapturedImage(imageData);
+      setCaptureTimestamp(timestamp);
+      setPhase('preview');
+      stopCamera();
       }
     }
   };
+  const handleSubmit = async () => {
+    if (capturedImage && captureTimestamp) {
+      // Prepare data for API submission
+      const submissionData = {
+        image: capturedImage,
+        timestamp: captureTimestamp,
+        metadata: {
+          userAgent: navigator.userAgent,
+          resolution: `${videoRef.current?.videoWidth}x${videoRef.current?.videoHeight}`
+        }
+      };
 
-  const handleSubmit = () => {
-    if (capturedImage && onSubmit) {
-      onSubmit(capturedImage);
+      try {
+        // THIS IS WHERE YOU WOULD CONNECT TO YOUR API ENDPOINT
+        // Example API call structure:
+        /*
+        const response = await fetch('YOUR_API_ENDPOINT_URL', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add any auth headers if needed
+          },
+          body: JSON.stringify(submissionData)
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to submit verification');
+        }
+
+        const result = await response.json();
+        console.log('Verification submitted successfully:', result);
+        */
+        
+        // For now, just call the parent callback
+        if (onSubmit) {
+          onSubmit(submissionData);
+        }
+      } catch (error) {
+        console.error('Error submitting verification:', error);
+        // Handle error (show toast, etc.)
+      }
     }
-  };
+};
 
   const handleRetake = () => {
     setCapturedImage(null);

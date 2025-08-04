@@ -7,6 +7,5 @@ import FaceVerification from './FaceVerification.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <FaceVerification/>
-
   </StrictMode>,
 )
